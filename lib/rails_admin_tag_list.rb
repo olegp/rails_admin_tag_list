@@ -13,11 +13,11 @@ module RailsAdmin
         class TagList < RailsAdmin::Config::Fields::Base
           RailsAdmin::Config::Fields::Types::register(self)
           register_instance_option(:formatted_value) do
-            value.join(', ')
+            (value || []).join(', ')
           end
 
           register_instance_option(:pretty_value) do
-            value.join(', ')
+            (value || []).join(', ')
           end
 
           # Accessor for field's label.
@@ -38,7 +38,6 @@ end
 
 RailsAdmin::Config::Fields.register_factory do |parent, properties, fields|
   model = parent.abstract_model.model
-
   if defined?(::ActsAsTaggableOn) && model.taggable?
     tag_types = model.tag_types
     property_name = properties.respond_to?(:name) ? properties.name : properties[:name]
